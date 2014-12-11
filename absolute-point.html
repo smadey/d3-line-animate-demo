@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>D3 Absolute Point Demo</title>
+
+    <style>
+    path {
+        fill: none;
+        stroke: #000;
+        stroke-dasharray: 2, 2;
+        stroke-width: 2px;
+    }
+    </style>
+</head>
+
+<body>
+    <svg id="main"></svg>
+
+    <script src="lib/d3/d3.min.js"></script>
+    <script>
+    var i = 0,
+        svg = d3.select("#main");
+
+    String.prototype.repeat = function(times) {
+        return (new Array(times + 1)).join(this);
+    }
+
+    segments = [{
+        x: 10,
+        y: 10
+    }, {
+        x: 110,
+        y: 10
+    }, {
+        x: 110,
+        y: 110
+    }, {
+        x: 10,
+        y: 110
+    }, {
+        x: 10,
+        y: 10
+    }];
+    line = "M" + segments[0].x + " " + segments[0].y
+
+    new_line = line + (" L" + segments[0].x + " " + segments[0].y).repeat(segments.length);
+    var mpath = svg.append('path').attr('d', new_line)
+        .attr('fill', 'none')
+        .attr('stroke', 'blue')
+
+    for (i = 0; i < segments.length; i++) {
+        new_segment = " " + "L" + segments[i].x + " " + segments[i].y
+        new_line = line + new_segment.repeat(segments.length - i)
+        mpath.transition().attr('d', new_line).duration(1000).delay(i * 1000);
+        line = line + new_segment
+
+    }
+    </script>
+
+</body>
+
+</html>
